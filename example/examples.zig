@@ -2,7 +2,6 @@ const std = @import("std");
 const gnuzplot = @import("gnuzplot");
 const Gnuzplot = gnuzplot.Gnuzplot;
 
-
 const fs = std.fs;
 const stdout = std.io.getStdOut().writer();
 const process = std.process;
@@ -24,7 +23,6 @@ const PlotData = struct {
     z: []f64,
 };
 
-
 pub fn readJSON(comptime T: type, allocator: Allocator, filename: []const u8, filled_struct: *T) !void {
 
     // open file
@@ -43,7 +41,7 @@ pub fn readJSON(comptime T: type, allocator: Allocator, filename: []const u8, fi
     };
     defer allocator.free(input_chars);
 
-    // // parse json input characters, filling struct
+    // parse json input characters, filling struct
     const opts = std.json.ParseOptions{ .allocator = allocator, .ignore_unknown_fields = true };
     filled_struct.* = tmp: {
          @setEvalBranchQuota(11_000);
@@ -121,4 +119,3 @@ pub fn main() anyerror!void {
 
     try plt.exit();
 }
-
