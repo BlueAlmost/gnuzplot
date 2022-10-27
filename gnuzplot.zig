@@ -59,22 +59,22 @@ pub fn Gnuzplot() type {
         }
 
         // place figure window on screen
-        pub fn figpos(self: Self, x: i64, y: i64) !void {
+        pub fn figPos(self: Self, x: i64, y: i64) !void {
             try self.writer.print("set term qt position {d} , {d} \n", .{x, y});
         }
 
         // size figure window
-        pub fn figsize(self: Self, wid: i64, ht: i64) !void {
+        pub fn figSize(self: Self, wid: i64, ht: i64) !void {
             try self.writer.print("set term qt size {d} , {d} \n", .{wid, ht});
         }
 
         // remove grid from the plot
-        pub fn grid_off(self: Self) !void {
+        pub fn gridOff(self: Self) !void {
             try self.writer.print("unset grid\n", .{});
         }
 
         // place a grid on the plot
-        pub fn grid_on(self: Self) !void {
+        pub fn gridOn(self: Self) !void {
             try self.writer.print("set grid\n", .{});
         }
 
@@ -89,7 +89,7 @@ pub fn Gnuzplot() type {
 
         // pause both parent zig process and child gnuplot process (maintain sync)
         // without terminal message
-        pub fn pause_quiet(self: Self, secs: f64) !void {
+        pub fn pauseQuiet(self: Self, secs: f64) !void {
             try self.writer.print("pause {d}\n", .{secs}); //gnu
             const nanosecs: u64 = @floatToInt(u64, secs * 1.0e9);
             std.time.sleep(nanosecs); // std.time.sleep expects nanoseconds
@@ -140,9 +140,9 @@ pub fn Gnuzplot() type {
 
         // plot the graph of vector x vs. vector y using:
         //
-        // plt.plotxy( .{x, y, "title 'y vs. x' with lines lw 3"});
+        // plt.plotXY( .{x, y, "title 'y vs. x' with lines lw 3"});
         //
-        pub fn plotxy(self: Self, argstruct: anytype) !void {
+        pub fn plotXY(self: Self, argstruct: anytype) !void {
             const argvec = fields(@TypeOf(argstruct));
             comptime var i=0;
             var vlen: usize = 0;
@@ -180,12 +180,12 @@ pub fn Gnuzplot() type {
         }
 
         // put label on x-axis
-        pub fn xlabel(self: Self, c: [*:0]const u8 ) !void {
+        pub fn xLabel(self: Self, c: [*:0]const u8 ) !void {
             try self.writer.print("set xlabel '{s}'\n", .{c});
         }
 
         // put label on y-axis
-        pub fn ylabel(self: Self, c: [*:0]const u8 ) !void {
+        pub fn yLabel(self: Self, c: [*:0]const u8 ) !void {
             try self.writer.print("set ylabel '{s}'\n", .{c});
         }
 
