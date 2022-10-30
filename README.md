@@ -19,7 +19,7 @@
 
     ```
     // single plot
-    try plt.grid_on();
+    try plt.gridOn();
     try plt.title("A simple signal from JSON data file");
     try plt.plot( .{plot_data.s, "title 'sin pulse' with lines ls 5 lw 1"} );
     ```
@@ -30,7 +30,7 @@
 
     ```
     // single plot with marker
-    try plt.grid_on();
+    try plt.gridOn();
     try plt.title("now with line and point");
     try plt.plot( .{plot_data.c, "title 'sin pulse' with linespoints ls 3 lw 2 pt 7 ps 2"} );
     ```
@@ -41,7 +41,7 @@
 
     ```
     // double plot
-    try plt.grid_off();
+    try plt.gridOff();
     try plt.title("Two other signals with transparency");
     try plt.plot(.{
         plot_data.s,"title 'sin' with lines ls 14 lw 2",
@@ -56,7 +56,7 @@
     ```
     // x vs. y line plot
     try plt.title("x vs y line plot");
-    try plt.plotxy(.{
+    try plt.plotXY(.{
         plot_data.spx1,plot_data.spy1,"title 'x' with linespoints lw 1 pt 9 ps 2.3",
         plot_data.spx2,plot_data.spy2,"title 'x' with linespoints lw 2 pt 7 ps 2.3",
     });
@@ -69,7 +69,7 @@
     ```
     // x vs. y scatter plot
     try plt.title("x vs y scatter plot with transparency");
-    try plt.plotxy(.{plot_data.bx,plot_data.by,"title 'x' with points ls 28 pt 7 ps 5"});
+    try plt.plotXY(.{plot_data.bx,plot_data.by,"title 'x' with points ls 28 pt 7 ps 5"});
     ```
 
  ------------------
@@ -78,7 +78,7 @@
 
     ```
     // simple bar plot
-    try plt.grid_on();
+    try plt.gridOn();
     try plt.title("bar plot");
     try plt.bar( .{plot_data.x, 0.75, "title 'x' ls 7 "} );
     ```
@@ -89,7 +89,7 @@
 
     ```
     // shared bar plot 
-    try plt.grid_on();
+    try plt.gridOn();
     try plt.title("shared bar plot with three vectors");
     try plt.bar( .{
         plot_data.x, 0.5, "title 'x' ls 33 ",
