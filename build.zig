@@ -57,6 +57,8 @@ const Target = struct {
         const mode = b.standardReleaseOptions();
 
         var exe = b.addExecutable(self.name, self.src);
+        exe.setOutputDir(b.pathFromRoot("./example"));
+        
         exe.setBuildMode(b.standardReleaseOptions());
         // exe.setTarget(target);
         exe.setBuildMode(mode);
@@ -64,7 +66,6 @@ const Target = struct {
         // gnuzplot
         exe.addPackage(pkgs.gnuzplot);
 
-        exe.setOutputDir("example");
         exe.install();
 
         const run_cmd = exe.run();
