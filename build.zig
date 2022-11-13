@@ -3,8 +3,7 @@ const Builder = std.build.Builder;
 const Pkg = std.build.Pkg;
 
 const pkgs = struct {
-
-    const gnuzplot = Pkg {
+    const gnuzplot = Pkg{
         .name = "gnuzplot",
         .source = .{ .path = "./gnuzplot.zig" },
         .dependencies = null,
@@ -18,14 +17,12 @@ const pkgs = struct {
     };
 };
 
-
 pub fn build(b: *std.build.Builder) void {
-
     const target = b.standardTargetOptions(.{});
     const mode = b.standardReleaseOptions();
 
-    const exe_targets = [_]Target {
-         .{ .name = "examples", .src = "example/examples.zig", .desc ="gnuzplot example"},
+    const exe_targets = [_]Target{
+        .{ .name = "examples", .src = "example/examples.zig", .desc = "gnuzplot example" },
     };
 
     for (exe_targets) |e_target| {
@@ -33,7 +30,7 @@ pub fn build(b: *std.build.Builder) void {
     }
 
     const exe_tests = b.addTest("main_test.zig");
-   
+
     exe_tests.setTarget(target);
     exe_tests.setBuildMode(mode);
 
@@ -46,9 +43,8 @@ pub fn build(b: *std.build.Builder) void {
 //---------------------------------------------------------------------------
 
 const Target = struct {
-
     name: []const u8,
-    src:  []const u8,
+    src: []const u8,
     desc: []const u8,
 
     pub fn build(self: Target, b: *std.build.Builder) void {
@@ -58,7 +54,7 @@ const Target = struct {
 
         var exe = b.addExecutable(self.name, self.src);
         exe.setOutputDir(b.pathFromRoot("./example"));
-        
+
         exe.setBuildMode(b.standardReleaseOptions());
         // exe.setTarget(target);
         exe.setBuildMode(mode);
