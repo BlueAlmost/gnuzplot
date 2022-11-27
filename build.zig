@@ -49,11 +49,13 @@ const Target = struct {
 
     pub fn build(self: Target, b: *std.build.Builder) void {
 
+        // write executables here instead of "zig-out/bin"
+        b.exe_dir = b.pathFromRoot("./example");
+
         // const target = b.standardTargetOptions(.{});
         const mode = b.standardReleaseOptions();
 
         var exe = b.addExecutable(self.name, self.src);
-        exe.setOutputDir(b.pathFromRoot("./example"));
 
         exe.setBuildMode(b.standardReleaseOptions());
         // exe.setTarget(target);
