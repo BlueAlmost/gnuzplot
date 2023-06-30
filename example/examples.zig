@@ -23,7 +23,7 @@ const PlotData = struct {
     z: []f64,
 };
 
-pub fn readJSON(comptime T: type, allocator: Allocator, filename: []const u8, filled_struct: *T) !void {
+pub fn readJSON(comptime T: type, allocator: Allocator, filename: []const u8) !T {
 
     // open file
     const file = std.fs.cwd().openFile(
@@ -35,22 +35,12 @@ pub fn readJSON(comptime T: type, allocator: Allocator, filename: []const u8, fi
     };
     defer file.close();
 
-    // read file into char array (maximum tolerable file size is set to 100 MB)
-    var input_chars: []const u8 = undefined;
+    const size = (try file.stat()).size;
 
-    input_chars = file.readToEndAlloc(allocator, 100 * 1024 * 1024) catch |err| {
-        std.log.err("Could not read file \"{s}: \n", .{filename});
-        return (err);
-    };
-    defer allocator.free(input_chars);
+    const source = try file.reader().readAllAlloc(allocator, size);
+    defer allocator.free(source);
 
-    // parse json input characters, filling struct
-    const opts = std.json.ParseOptions{ .allocator = allocator, .ignore_unknown_fields = true };
-    filled_struct.* = tmp: {
-        @setEvalBranchQuota(11_000);
-        var stream = std.json.TokenStream.init(input_chars);
-        break :tmp try std.json.parse(T, &stream, opts);
-    };
+    return try std.json.parseFromSliceLeaky(T, allocator, source, .{});
 }
 
 pub fn main() anyerror!void {
@@ -62,7 +52,7 @@ pub fn main() anyerror!void {
     const allocator = arena.allocator();
 
     var plot_data: PlotData = undefined;
-    try readJSON(PlotData, allocator, filename, &plot_data);
+    plot_data = try readJSON(PlotData, allocator, filename);
 
     // Gnuzplot
     var plt = try Gnuzplot().init(allocator);

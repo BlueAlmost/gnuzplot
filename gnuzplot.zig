@@ -80,7 +80,9 @@ pub fn Gnuzplot() type {
         pub fn pause(self: Self, secs: f64) !void {
             try stdout.print("pausing {d} s\n", .{secs}); //
             try self.writer.print("pause {d}\n", .{secs}); //gnu
-            const nanosecs: u64 = @floatToInt(u64, secs * 1.0e9);
+
+            const nanosecs: u64 = @intFromFloat(secs * 1.0e9);
+
             std.time.sleep(nanosecs); // std.time.sleep expects nanoseconds
         }
 
@@ -88,7 +90,10 @@ pub fn Gnuzplot() type {
         // without terminal message
         pub fn pauseQuiet(self: Self, secs: f64) !void {
             try self.writer.print("pause {d}\n", .{secs}); //gnu
-            const nanosecs: u64 = @floatToInt(u64, secs * 1.0e9);
+
+            const nanosecs: u64 = @intFromFloat(secs * 1.0e9);
+
+
             std.time.sleep(nanosecs); // std.time.sleep expects nanoseconds
         }
 
@@ -193,8 +198,9 @@ pub fn Gnuzplot() type {
             const argvec = fields(@TypeOf(argstruct));
             var num_vars: usize = argvec.len / num_args_per;
             var vlen: usize = 0;
-            var width: f64 = @floatCast(f64, @field(argstruct, argvec[1].name));
-            width = @intToFloat(f64, num_args_per) * width / @intToFloat(f64, argvec.len);
+
+            var width: f64 = @as(f64, @floatCast(@field(argstruct, argvec[1].name)));
+            width = @as(f64, @floatFromInt(num_args_per)) * width / @as(f64, @floatFromInt(argvec.len));
 
             vlen = @field(argstruct, argvec[0].name).len;
 
@@ -221,7 +227,9 @@ pub fn Gnuzplot() type {
 
                 while (j < vlen) : (j += 1) {
                     try self.writer.print("{d}   {e:10.4} {e:10.4}\n", .{
-                        @intToFloat(f64, j) + @intToFloat(f64, i) * width / @intToFloat(f64, num_vars),
+
+                        @as(f64, @floatFromInt(j)) + @as(f64, @floatFromInt(i)) * width / @as(f64, @floatFromInt(num_vars)),
+
                         @field(argstruct, argvec[i].name)[j],
                         // @field(argstruct, argvec[i+1].name)
                         width,

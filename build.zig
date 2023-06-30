@@ -14,7 +14,6 @@ pub fn build(b: *std.Build) void {
     });
     b.installArtifact(exe_example);
 
-
     exe_example.addAnonymousModule("gnuzplot", .{
         .source_file = .{ .path = "./gnuzplot.zig" },
     });
