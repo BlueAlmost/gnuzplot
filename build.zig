@@ -12,13 +12,15 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+
     b.installArtifact(exe_example);
+
+    b.getInstallStep().dependOn(&b.addInstallArtifact(exe_example, .{
+            .dest_dir = .{ .override = .{ .custom = "../example"}}}).step);
 
     exe_example.addAnonymousModule("gnuzplot", .{
         .source_file = .{ .path = "./gnuzplot.zig" },
     });
-
-    b.exe_dir = b.pathFromRoot("./example");
 
     // unit tests ----------------------------------------------------
     const unit_tests = b.addTest(.{
