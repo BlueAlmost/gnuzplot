@@ -8,7 +8,7 @@ test "\t methods, \t .init \n" {
     defer arena.deinit();
     const allocator = arena.allocator();
     print("Apparently, at present, there is no way to failure to spawn\n", .{});
-    var plt = try Gnuzplot().init(allocator);
+    const plt = try Gnuzplot().init(allocator);
     _ = plt;
 }
 
