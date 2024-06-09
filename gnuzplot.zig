@@ -4,7 +4,8 @@ const print = std.debug.print;
 const Allocator = std.mem.Allocator;
 const stdout = std.io.getStdOut().writer();
 
-const child = std.child_process;
+const Child = std.process.Child;
+
 const fields = std.meta.fields;
 const colors = @import("matplotlib_colors.zig");
 
@@ -12,12 +13,12 @@ pub fn Gnuzplot() type {
     return struct {
         const Self = @This();
 
-        g: std.ChildProcess,
+        g: Child,
         writer: std.fs.File.Writer,
 
         pub fn init(allocator: Allocator) !Self {
             const child_name = "gnuplot";
-            var g = std.ChildProcess.init(&[_][]const u8{child_name}, allocator);
+            var g = Child.init(&[_][]const u8{child_name}, allocator);
 
             g.stdin_behavior = .Pipe;
             g.spawn() catch |err| {
@@ -196,7 +197,7 @@ pub fn Gnuzplot() type {
         pub fn bar(self: Self, argstruct: anytype) !void {
             const num_args_per = 3;
             const argvec = fields(@TypeOf(argstruct));
-            var num_vars: usize = argvec.len / num_args_per;
+            const num_vars: usize = argvec.len / num_args_per;
             var vlen: usize = 0;
 
             var width: f64 = @as(f64, @floatCast(@field(argstruct, argvec[1].name)));
